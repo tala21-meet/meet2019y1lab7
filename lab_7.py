@@ -30,19 +30,17 @@ turtle.hideturtle()
 def new_stamp():
     snake_pos = snake.pos() #Get snake’s position
     #Append the position tuple to pos_list
-    pos_list.append(snake.pos())
+    pos_list.append(snake_pos)
     #snake.stamp() returns a stamp ID. Save it in some variable         
     ID= snake.stamp()
     #append that stamp ID to stamp_list.     
     stamp_list.append(ID)
-
 #Draw a snake at the start of the game with a for loop
 #for loop should use range() and count up to the number of pieces
 #in the snake (i.e. START_LENGTH)
 for something in range(START_LENGTH):
     x_pos=snake.pos()[0] #Get x-position with snake.pos()[0]
     y_pos=snake.pos()[1] 
-   
 
      # You should write code to check for the left, top, and bottom edges.
     #####WRITE YOUR CODE HERE
@@ -101,8 +99,6 @@ def right():
 
 turtle.onkeypress(up, "Up") # Create listener for up key
 turtle.onkeypress(down, 'Down')
-
-
 turtle.onkeypress(left,'Left')
 turtle.onkeypress(right,'Right')
 #3. Do the same for the other arrow keys
@@ -113,15 +109,17 @@ turtle.listen()
 def move_snake():
    #Add new lines to the end of the function
     #Grab position of snake
-    new_pos = snake.pos()
-    new_x_pos = new_pos[0]
-    new_y_pos = new_pos[1]
+    my_pos = snake.pos()
+    x_pos = my_pos[0]
+    y_pos = my_pos[1]
 
  # The next three lines check if the snake is hitting the 
     # right edge.
-    if new_x_pos >= RIGHT_EDGE:
-         print("You hit the right edge! Game over!")
-         quit()
+
+    #if new_x_pos >= RIGHT_EDGE:
+    #     print("You hit the right edge! Game over!")
+    #     quit()
+    
 
      # You should write code to check for the left, top, and bottom edges.
     #####WRITE YOUR CODE HERE
@@ -146,11 +144,11 @@ def move_snake():
         print('You moved left!')
     elif snake.direction=="Right":
         snake.goto(x_pos+SQUARE_SIZE,y_pos)
-    #If snake.direction is up, then we want the snake to change
-    #If snake.direction is up, then we want the snake to change
         print('You moved right!')
-    if new_x_pos >= RIGHT_EDGE:
-         print("You hit the right edge! Game over!")
+    
+
+    #if new_x_pos >= RIGHT_EDGE:
+    #     print("You hit the right edge! Game over!")
 
 
      # You should write code to check for the left, top, and bottom edges.
@@ -170,6 +168,14 @@ def move_snake():
 
      # You should write code to check for the left, top, and bottom edges.
     #####WRITE YOUR CODE HERE
+def up():
+    snake.direction="Up"
+    print("You pressed the up key!")
+
+# You should do the same for the up(), down(), left(), and right()  functions
+
+##### YOUR CODE HERE
+
 
 
 

@@ -3,26 +3,29 @@ import random #We'll need this later in the lab
 
 turtle.tracer(1,0) #This helps the turtle move more smoothly
 
-SIZE_X=800
-SIZE_Y=500
+SIZE_X=600
+SIZE_Y=600
 turtle.setup(SIZE_X, SIZE_Y) #Curious? It's the turtle window  
-                             #size.    
+                           #size.
 turtle.penup()
 
 SQUARE_SIZE = 20
 START_LENGTH = 7
 TIME_STEP = 200
-
+x=0
 #Initialize lists
 pos_list = []
 stamp_list = []
 food_pos = []
 food_stamps = []
-
+kill_list=[]
+kill_stamps=[]
 #Set up positions (x,y) of boxes that make up the snake
+
 snake = turtle.clone()
 snake.shape("square")
-
+snake.color('green')
+turtle.bgcolor('white')
 #Hide the turtle object (it's an arrow - we don't need to see it)
 turtle.hideturtle()
 #Function to draw a part of the snake on the screen
@@ -110,17 +113,22 @@ turtle.listen()
 
 #ADD THE LINES BELOW
 
-turtle.register_shape("trash.gif") #Add trash picture
+turtle.register_shape("Icon.1.gif") #Add trash picture
                       # Make sure you have downloaded this shape 
                       # from the Google Drive folder and saved it
                       # in the same folder as this Python script
 
 food = turtle.clone()
-food.shape("trash.gif") 
+food.shape("Icon.1.gif") 
+turtle.register_shape('bomb.gif')
 
+bomb=turtle.clone()
+bomb.shape('bomb.gif')
 #Locations of food
 food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
 food_stamps = []
+bomb_pos=[(200,200),(-200,200),(-200,-200),(200,-200)]
+bomb_stamps=[]
 
 # Write code that:
 #1. moves the food turtle to each food position
@@ -135,6 +143,14 @@ for this_food_pos in food_pos:
     food_id = food.stamp()
     food_stamps.append(food_id)
     food.hideturtle()
+
+for this_bomb_pos in bomb_pos:
+    bomb.penup()
+    bomb.goto(this_bomb_pos)
+    bomb_id=bomb.stamp()
+    bomb_stamps.append(bomb_id)
+    bomb.hideturtle()
+    
     
 
 def move_snake():
@@ -153,8 +169,42 @@ def move_snake():
         food_pos.pop(food_index) #Remove eaten food position
         food_stamps.pop(food_index) #Remove eaten food stamp
         print("You have eaten the food!")
+        x=x+1
     else:
         remove_tail()
+    new_pos = snake.pos()
+    new_x_pos = new_pos[0]
+    new_y_pos = new_pos[1]
+    if snake.pos() in bomb_pos:
+        bomb_index=bomb_pos.index(snake.pos()) #What does this do?
+        bomb.clearstamp(bomb_stamps[bomb_index]) #Remove eaten food stamp
+        bomb_pos.pop(bomb_index) #Remove eaten food position
+        bomb_stamps.pop(bomb_index) #Remove eaten food stamp
+        print("U bombed yourself! U fucked up!")
+        remove_tail()
+        x=x-1
+    if len(stamp_list)==0:
+        print('life sucks')
+        quit()
+
+        # The next three lines check if the snake is hitting the 
+        # right edge.
+    if new_x_pos >= RIGHT_EDGE:
+         print("You hit the right edge! Game over!")
+         quit()
+
+     # You should write code to check for the left, top, and bottom edges.
+    #####WRITE YOUR CODE HERE
+    elif new_x_pos<=LEFT_EDGE:
+         print('You hit the left edge! Game over!')
+         quit()
+    elif new_y_pos<DOWN_EDGE:
+        print('You hit the bottom edge!Game over!')
+        quit()
+    elif new_y_pos>UP_EDGE:
+        print('You hit the top edgr!GAme over!')
+        quit()
+
     
     #HINT: This if statement may be useful for Part 8
 
@@ -229,7 +279,8 @@ def move_snake():
     if len(food_stamps) <= 6 :
     	make_food()
     turtle.ontimer(move_snake,TIME_STEP) #<--Last line of function
-    
+    if len(bomb_stamps) <= 10 :
+    	make_bomb()
 
 def make_food():
     #The screen positions go from -SIZE/2 to +SIZE/2
@@ -243,6 +294,7 @@ def make_food():
     #Pick a position that is a random multiple of SQUARE_SIZE
     food_x = random.randint(min_x,max_x)*SQUARE_SIZE
     food_y = random.randint(min_y,max_y)*SQUARE_SIZE
+    
 
         ##1.WRITE YOUR CODE HERE: Make the food turtle go to the randomly-generated
         ##                        position
@@ -252,11 +304,49 @@ def make_food():
         ##3.WRITE YOUR CODE HERE: Add the food turtle's stamp to the food stamps list
     food_stamps.append(food.stamp())
 
+def make_bomb():
+    #The screen positions go from -SIZE/2 to +SIZE/2
+    #But we need to make food pieces only appear on game squares
+    #So we cut up the game board into multiples of SQUARE_SIZE.
+    min_x=-int(SIZE_X/2/SQUARE_SIZE)+2
+    max_x=int(SIZE_X/2/SQUARE_SIZE)-2
+    min_y=-int(SIZE_Y/2/SQUARE_SIZE)+2
+    max_y=int(SIZE_Y/2/SQUARE_SIZE)-2
+        
+        #Pick a position that is a random multiple of SQUARE_SIZE
+    bomb_x = random.randint(min_x,max_x)*SQUARE_SIZE
+    bomb_y = random.randint(min_y,max_y)*SQUARE_SIZE
+        
+
+            ##1.WRITE YOUR CODE HERE: Make the bomb turtle go to the randomly-generated
+            ##                        position
+    bomb.goto(bomb_x,bomb_y)
+            ##2.WRITE YOUR CODE HERE: Add the food turtle's position to the bomb positions list
+    bomb_pos.append(bomb.pos())
+            ##3.WRITE YOUR CODE HERE: Add the bomb turtle's stamp to the bomb stamps list
+    bomb_stamps.append(bomb.stamp())
+    
     
 move_snake()  
 
-    
-    
+
+
+turtle_tow=turtle.clone()
+turtle_tow.penup()
+turtle_tow.pencolor('black')
+turtle_tow.pensize(10)
+turtle_tow.goto(200,200)
+turtle_tow.pendown()
+turtle_tow.goto(-200,200)
+turtle_tow.goto(-200,-200)
+turtle_tow.goto(200,-200)
+turtle_tow.goto(200,200)
+turtle_tow.penup()
+
+pointer=turtle.clone()
+pointer.write('snake_Game', font=("Arial", 17, "normal"))
+  
+
 
 
 

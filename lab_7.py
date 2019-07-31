@@ -73,10 +73,10 @@ def remove_tail():
     pos_list.pop(0) # remove last piece of tail's position
 
 snake.direction = "Up"
-UP_EDGE = 250
-DOWN_EDGE = -250
-RIGHT_EDGE = 400
-LEFT_EDGE = -400
+UP_EDGE = 200
+DOWN_EDGE = -200
+RIGHT_EDGE = 200
+LEFT_EDGE = -200
 
 
 
@@ -169,7 +169,7 @@ def move_snake():
         food_pos.pop(food_index) #Remove eaten food position
         food_stamps.pop(food_index) #Remove eaten food stamp
         print("You have eaten the food!")
-        x=x+1
+        snake.color(random.choice(color))
     else:
         remove_tail()
     new_pos = snake.pos()
@@ -182,7 +182,7 @@ def move_snake():
         bomb_stamps.pop(bomb_index) #Remove eaten food stamp
         print("U bombed yourself! U fucked up!")
         remove_tail()
-        x=x-1
+    
     if len(stamp_list)==0:
         print('life sucks')
         quit()
@@ -286,14 +286,14 @@ def make_food():
     #The screen positions go from -SIZE/2 to +SIZE/2
     #But we need to make food pieces only appear on game squares
     #So we cut up the game board into multiples of SQUARE_SIZE.
-    min_x=-int(SIZE_X/2/SQUARE_SIZE)+1
-    max_x=int(SIZE_X/2/SQUARE_SIZE)-1
-    min_y=-int(SIZE_Y/2/SQUARE_SIZE)+1
-    max_y=int(SIZE_Y/2/SQUARE_SIZE)-1
+    min_x=-int(200/2/SQUARE_SIZE)+1
+    max_x=int(200/SQUARE_SIZE)-1
+    min_y=-int(200/2/SQUARE_SIZE)+1
+    max_y=int(200/2/SQUARE_SIZE)-1
     
     #Pick a position that is a random multiple of SQUARE_SIZE
-    food_x = random.randint(min_x,max_x)*SQUARE_SIZE
-    food_y = random.randint(min_y,max_y)*SQUARE_SIZE
+    food_x = random.randint(-5,5)*SQUARE_SIZE
+    food_y = random.randint(-5,5)*SQUARE_SIZE
     
 
         ##1.WRITE YOUR CODE HERE: Make the food turtle go to the randomly-generated
@@ -314,8 +314,8 @@ def make_bomb():
     max_y=int(SIZE_Y/2/SQUARE_SIZE)-2
         
         #Pick a position that is a random multiple of SQUARE_SIZE
-    bomb_x = random.randint(min_x,max_x)*SQUARE_SIZE
-    bomb_y = random.randint(min_y,max_y)*SQUARE_SIZE
+    bomb_x = random.randint(-5,5)*SQUARE_SIZE
+    bomb_y = random.randint(-5,5)*SQUARE_SIZE
         
 
             ##1.WRITE YOUR CODE HERE: Make the bomb turtle go to the randomly-generated
@@ -344,7 +344,11 @@ turtle_tow.goto(200,200)
 turtle_tow.penup()
 
 pointer=turtle.clone()
+pointer.goto(50,300)
 pointer.write('snake_Game', font=("Arial", 17, "normal"))
+
+
+color=['blue','pink','black','green','purple','red','yellow','orange']
   
 
 
